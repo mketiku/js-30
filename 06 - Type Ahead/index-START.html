@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Name Filter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const endpoint =
+      'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const cities = [];
+    // const cities2 = [];
+    // const prom = fetch(endpoint);
+    // console.log(prom) // creates a promise that is unresolved until you call then on it
+
+    // fetch(endpoint)
+    //   .then(blob => blob.json())
+    //   .then(data => console.log(data))
+    fetch(endpoint)
+      .then(function (blob) {
+        return blob.json()
+      })
+      .then(function (data) {
+        // console.log(data)
+        cities.push(...data); //way 1
+        // data.forEach(function(element) {
+        //   cities2.push(element)
+        // }); //way 2
+        // console.table(cities)
+        // console.table(cities2)
+      })
+
+    // var findMatches = function(word, cities) {
+    // function expression
+    function findMatches(word, cities) {
+      // function declaration
+      return cities.filter(function (place) {
+        // return cities matching certain criteria
+
+        const regex = new RegExp(word, 'gi');
+        //create expression that matches for the word passed in globally meaning anywhere in the string
+        // then insensitive meaning the case does not matter 
+
+        // TODO figure out if the city of state matches the search item
+        return place.city.match(regex) || place.state.match(regex)
+      })
+    }
+
+
+    function displayMatches() {
+      // console.log(this.value);
+      suggestions.innerHTML = createHtml(findMatches(this.value, cities))
+    }
+
+    function createHtml(matchArray) {
+      /*
+      Given an array of matched elements, return a html mapping of said elements into a string
+      */
+      var html = matchArray.map(function (place) {
+        //   return `<li>
+        //       <span class="name">${place.city}, ${place.state}</span>
+        //       <span class="population">${place.population}</span>
+        //       </li>` //returns an array than will then be joined into one big ole string
+        // }).join(''); //way 1
+        return '<li><span class="name">' + place.city + ', ' + place.state + '</span><span class="population">' +
+          place.population + '</span>' + '</li>'
+      }).join(""); // way 2
+      return html
+    }
+    var searchInput = document.querySelector('.search')
+    var suggestions = document.querySelector('.suggestions')
+
+    searchInput.addEventListener('change', displayMatches); //once the searchinput changes then run the displayMatches
+    searchInput.addEventListener('keyup', displayMatches); //once the searchinput changes then run the keyup
+  </script>
+</body>
+
+</html>
