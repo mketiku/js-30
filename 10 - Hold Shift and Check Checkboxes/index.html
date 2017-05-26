@@ -98,34 +98,76 @@
   </div>
 
   <script>
-    const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+    const arrayCheckboxes = document.querySelectorAll('.inbox input[type=checkbox]');
+    // var startElementChecked = '';
+    // var startElementCheckedIndex = '';
+    // var lastElementChecked = '';
+    // var lastElementCheckedIndex = '';
+
+    // function getNodeIndex(element) {
+    //   // find the index of an input element in the dom tree
+    //   return Array.from(element.parentNode.parentNode.children).indexOf(element.parentNode);
+    // }
+
+    // function findMiddleElements() {
+    //   arrayCheckboxes.forEach(function (element) {
+    //     // for each element in the array determine if it is inbetween the start and end element and if so check it 
+    //     var currentElementIndex =  getNodeIndex(element);
+    //     if ((currentElementIndex >= startElementCheckedIndex ) && (currentElementIndex  <= lastElementCheckedIndex)) {
+    //       element.checked = true;
+    //     }
+    //   })
+    // }
+
+    // function handleCheck(e) {
+
+    //   //check that the shiftkey is down and the user is checking
+    //   if (e.shiftKey && this.checked) {
+    //     lastElementChecked = this;
+    //     lastElementCheckedIndex = getNodeIndex(lastElementChecked);
+    //     findMiddleElements();
+    //   } else {
+    //     startElementChecked = this;
+    //     startElementCheckedIndex = getNodeIndex(startElementChecked);
+
+    //   }
+    // } // way 1
+
 
     let lastChecked;
 
     function handleCheck(e) {
-      // Check if they had the shift key down
-      // AND check that they are checking it
       let inBetween = false;
       if (e.shiftKey && this.checked) {
-        // go ahead and do what we please
-        // loop over every single checkbox
-        checkboxes.forEach(checkbox => {
-          console.log(checkbox);
+        arrayCheckboxes.forEach(function (checkbox) { 
           if (checkbox === this || checkbox === lastChecked) {
-            inBetween = !inBetween;
-            console.log('STarting to check them inbetween!');
-          }
+            inBetween = !inBetween; // toggle inbetween
+            console.log('Starting to check them inbetween!');
 
+          }
           if (inBetween) {
-            checkbox.checked = true;
+            checkbox.checked = true
           }
-        });
+
+        }, this); // way 2 es5
+        // arrayCheckboxes.forEach(checkbox => {
+        //   console.log(checkbox);
+        //   if (checkbox === this || checkbox === lastChecked) {
+        //     inBetween = !inBetween;
+        //     console.log('STarting to check them inbetween!');
+        //   }
+
+        //   if (inBetween) {
+        //     checkbox.checked = true;
+        //   }
+        // }); # way 3 es6
       }
-
-      lastChecked = this;
+      lastChecked = this
     }
-
-    checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+    // arrayCheckboxes.forEach(function (checkbox) {
+    //   checkbox.addEventListener('click', handleCheck)
+    // });
+    arrayCheckboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
   </script>
 </body>
 
