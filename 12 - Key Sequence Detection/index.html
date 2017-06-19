@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+</head>
+
+<body>
+  <script>
+
+    const pressed = []; // hold the content of every pressed key
+    const secretcode = 'letmein';
+    function handleKey(e) {
+      // handle the input of a key
+
+      console.log(e.key)
+      pressed.push(e.key)   
+      splicePressedArray(pressed, secretcode)
+      checkPressedArray(pressed, secretcode)
+      console.log(pressed)
+    }
+
+    function splicePressedArray(pressed, secretcode) {
+      return pressed.splice(-secretcode.length - 1, pressed.length - secretcode.length);  // slice the array from the back up 7 letters 
+    }
+
+    function checkPressedArray(pressed, secretcode) {
+      if (pressed.join('').includes(secretcode)){
+          alert('Password Saved');
+          cornify_add(); //adds a random unicorn to the body of the html page 
+      }
+    }
+    window.addEventListener('keyup', handleKey) // way 1 es5
+    // window.addEventListener('keyup', (e) => {
+    //   console.log(e.key)
+    // }) // way 2 es6
+  </script>
+</body>
+
+</html>
